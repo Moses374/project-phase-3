@@ -59,6 +59,7 @@ class User:
         cursor.execute("UPDATE users SET username = ?, role = ? WHERE id = ?", (self.username, self.role, self.id))
         conn.commit()
 
+
     def delete(self):
         cursor.execute("DELETE FROM users WHERE id = ?", (self.id,))
         conn.commit()
