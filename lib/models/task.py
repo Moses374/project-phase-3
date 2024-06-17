@@ -1,5 +1,10 @@
 from .config import conn, cursor
-import datetime
+import sqlite3
+
+# Database initialization
+DATABASE_NAME = 'task_manager.db'
+conn = sqlite3.connect(DATABASE_NAME)
+cursor = conn.cursor()
 
 
 class Task:
@@ -34,35 +39,4 @@ class Task:
         cursor.execute("INSERT INTO tasks (title, description, user_id, category_id) VALUES (?, ?, ?, ?)",
                        (title, description, user_id, category_id))
         conn.commit()
-        id = cursor.lastrowid
-        created_at = datetime.datetime.now()  # Capture creation time explicitly
-        return cls(id, title, description, False, created_at, user_id, category_id)
-
-    @classmethod
-    def find_by_id(cls, task_id):
-        sql = "SELECT * FROM tasks WHERE id = ?"
-        cursor.execute(sql, (task_id,))
-        row = cursor.fetchone()
-        return cls(*row) if row else None
-
-    def mark_complete(self):
-        self.completed = True
-        sql = "UPDATE tasks SET completed = ? WHERE id = ?"
-        cursor.execute(sql, (self.completed, self.id))
-        conn.commit()
-
-    def update(self, title=None, description=None):
-        # Update only provided fields
-        updates = []
-        if title:
-            updates.append("title = ?")
-        if description:
-            updates.append("description = ?")
-
-        if updates:
-            sql = f"UPDATE tasks SET {', '.join(updates)} WHERE id = ?"
-            params = [getattr(self, field) for field in ["title", "description"] if getattr(self, field)]
-            params.append(self.id)
-            cursor.execute(sql, params)
-            conn.commit()
-
+        return cls(cursor.lastrowid, title, description, False, None, user_id, category_id)
