@@ -1,4 +1,4 @@
-import sqlite3
-
-CONN = sqlite3.connect('company.db')
-CURSOR = CONN.cursor()
+# File: __init__.py
+from .user import User
+from .task import Task
+from .category import Category
