@@ -8,22 +8,24 @@ cursor = conn.cursor()
 
 
 class User:
-    def __init__(self, id, username):
+    def __init__(self, id, username, role):
         self.id = id
         self.username = username
+        self.role = role
 
     @classmethod
     def create_table(cls):
         cursor.execute("""
             CREATE TABLE IF NOT EXISTS users (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
-                username TEXT
+                username TEXT,
+                role TEXT
             )
         """)
         conn.commit()
 
     @classmethod
-    def create(cls, username):
-        cursor.execute("INSERT INTO users (username) VALUES (?)", (username,))
+    def create(cls, username, role):
+        cursor.execute("INSERT INTO users (username, role) VALUES (?, ?)", (username, role))
         conn.commit()
-        return cls(cursor.lastrowid, username)
+        return cls(cursor.lastrowid, username, role)
