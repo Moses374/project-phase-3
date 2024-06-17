@@ -1,3 +1,4 @@
+from .config import conn, cursor
 import sqlite3
 
 # Database initialization

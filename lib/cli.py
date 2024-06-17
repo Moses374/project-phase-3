@@ -1,13 +1,12 @@
 import sys
-from datetime import datetime
 from models.user import User
 from models.task import Task
 from models.category import Category
 
 def main():
+    print("\nTask Manager CLI")
     while True:
-        print("\nTask Manager CLI")
-        print("1. Task Management")
+        print("\n1. Task Management")
         print("2. Category Management")
         print("3. User Management")
         print("4. Exit")
@@ -21,14 +20,15 @@ def main():
         elif choice == '3':
             manage_users()
         elif choice == '4':
+            print("Exiting...")
             sys.exit()
         else:
             print("Invalid choice. Please try again.")
 
 def manage_tasks():
+    print("\n--- Task Management ---")
     while True:
-        print("\nTask Management")
-        print("1. Add Task")
+        print("\n1. Add Task")
         print("2. View Tasks")
         print("3. Back to Main Menu")
 
@@ -44,17 +44,30 @@ def manage_tasks():
             print("Invalid choice. Please try again.")
 
 def add_task():
-    # Your code to add a task
-    pass
+    print("\n--- Add Task ---")
+    title = input("Enter task title: ")
+    description = input("Enter task description: ")
+    user_id = input("Enter user ID: ")
+
+    try:
+        task = Task.create(title=title, description=description, user_id=user_id)
+        print("Task added successfully!")
+    except Exception as e:
+        print(f"Error: {e}")
 
 def view_tasks():
-    # Your code to view tasks
-    pass
+    print("\n--- View Tasks ---")
+    tasks = Task.select()
+    if tasks:
+        for task in tasks:
+            print(f"Task ID: {task.id}, Title: {task.title}, Description: {task.description}, User ID: {task.user_id}")
+    else:
+        print("No tasks found.")
 
 def manage_categories():
+    print("\n--- Category Management ---")
     while True:
-        print("\nCategory Management")
-        print("1. Add Category")
+        print("\n1. Add Category")
         print("2. View Categories")
         print("3. Back to Main Menu")
 
@@ -70,17 +83,28 @@ def manage_categories():
             print("Invalid choice. Please try again.")
 
 def add_category():
-    # Your code to add a category
-    pass
+    print("\n--- Add Category ---")
+    name = input("Enter category name: ")
+
+    try:
+        category = Category.create(name=name)
+        print("Category added successfully!")
+    except Exception as e:
+        print(f"Error: {e}")
 
 def view_categories():
-    # Your code to view categories
-    pass
+    print("\n--- View Categories ---")
+    categories = Category.select()
+    if categories:
+        for category in categories:
+            print(f"Category ID: {category.id}, Name: {category.name}")
+    else:
+        print("No categories found.")
 
 def manage_users():
+    print("\n--- User Management ---")
     while True:
-        print("\nUser Management")
-        print("1. Add User")
+        print("\n1. Add User")
         print("2. View Users")
         print("3. Back to Main Menu")
 
@@ -96,12 +120,24 @@ def manage_users():
             print("Invalid choice. Please try again.")
 
 def add_user():
-    # Your code to add a user
-    pass
+    print("\n--- Add User ---")
+    username = input("Enter username: ")
+    role = input("Enter role: ")
+
+    try:
+        user = User.create(username=username, role=role)
+        print("User added successfully!")
+    except Exception as e:
+        print(f"Error: {e}")
 
 def view_users():
-    # Your code to view users
-    pass
+    print("\n--- View Users ---")
+    users = User.select()
+    if users:
+        for user in users:
+            print(f"User ID: {user.id}, Username: {user.username}, Role: {user.role}")
+    else:
+        print("No users found.")
 
 if __name__ == '__main__':
     main()
